@@ -42,7 +42,7 @@ export const App = () => {
     <WagmiConfig client={client}>
       <ConnectWalletProvider chains={chains} wallet={undefined}>
         <_App />
-        version 3
+        version 4
       </ConnectWalletProvider>
     </WagmiConfig>
   );
