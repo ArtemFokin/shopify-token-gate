@@ -1,0 +1,54 @@
+<div
+  id="tokengating-example-app"
+  data-product_id="{{ product.id }}"
+  data-product_gated="{{ product.gated? }}">
+  Tokengating example app block placeholder
+</div>
+
+<script>
+  {% comment %} window.myAppGates = [{%- for gate in product.gates -%}{%- if gate.configuration.app_id == 'tokengate-app-stratch' -%}{%- assign configuration = gate.configuration -%}{
+          id: "{{ configuration.id }}",
+          name: "{{ configuration.name | escape }}",
+          requirements: {{ gate.configuration.metafields.tokengating-example-app.requirements }},
+          reaction: {{ gate.configuration.metafields.tokengating-example-app.reaction }}
+        },{%- endif -%}{%- endfor -%}]; {% endcomment %}
+
+  window.myAppGates = [{
+      id: "gid://shopify/GateConfiguration/164078",
+      name: "memberfi - demo",
+      requirements: {
+        "logic": "ANY",
+        "conditions": [
+          {
+            "name": "Gate for 0x4f5023ccd3e7d1360c1d3ae8c2f23649a70c345b",
+            "conditionsDescription": "Any token",
+            "contractAddress": "0x4f5023ccd3e7d1360c1d3ae8c2f23649a70c345b",
+            "imageUrl": "https://placekitten.com/g/200/200"
+          }
+        ]
+      },
+      reaction: {
+        "name": "Gate for 0x4f5023ccd3e7d1360c1d3ae8c2f23649a70c345b",
+        "type": "discount",
+        "discount": {
+          "type": "percentage",
+          "value": "10"
+        }
+      }
+    }];
+</script>
+
+<script
+  async
+  type="module"
+  src="{{ "index.js" | asset_url }}"></script>
+
+
+{% schema %}
+  {
+    "name": "Tokengate",
+    "target": "section",
+    "templates": ["product"],
+    "settings": []
+  }
+{% endschema %}

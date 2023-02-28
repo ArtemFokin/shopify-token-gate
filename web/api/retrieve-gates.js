@@ -21,6 +21,7 @@ const GATES_QUERY = `
         subjectBindings(first: $first) {
           nodes {
             id
+            active
           }
         }
         createdAt
