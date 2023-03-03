@@ -7,6 +7,8 @@ import { getContractAddressesFromGate } from "./api/gates.js";
 
 const web3 = new Web3();
 
+const ALCHEMY_API_KEY = "bSe3N2xxqL0Uuev82vvSXG4jTyJvj-8e";
+
 export function configurePublicApi(app) {
   // this should be limited to app domains that have your app installed
   const corsOptions = {
@@ -29,16 +31,17 @@ export function configurePublicApi(app) {
       res.status(403).send("Invalid signature");
       return;
     }
-
+    
     // retrieve relevant contract addresses from gates
     const requiredContractAddresses = await getContractAddressesFromGate({shopDomain, productGid});
-
+    
     // now lookup nfts
-    const unlockingTokens = await getUserTokenForContract(
+    const unlockingTokens = await getUserTokenForContract({
       address,
-      requiredContractAddresses,
+      contractAddresses: requiredContractAddresses,
       networkId
-    );
+    });
+    console.log({unlockingTokens})
     if (unlockingTokens.length === 0) {
       res.status(403).send("No unlocking tokens");
       return;
@@ -65,19 +68,25 @@ function getHmac(payload) {
   };
 }
 
-async function getUserTokenForContract(address, contractAddresses, networkId) {
+async function getUserTokenForContract({
+  address,
+  contractAddresses,
+  networkId,
+}) {
   // this could be some lookup against some node or a 3rd party service like Alchemy
 
   const config = {
-    apiKey: "bSe3N2xxqL0Uuev82vvSXG4jTyJvj-8e",
-    network: networkId,
+    apiKey: ALCHEMY_API_KEY,
+    network: Network.MATIC_MAINNET,
   };
   const alchemy = new Alchemy(config);
 
   // Get owner of NFT
+  console.log(config, address, contractAddresses)
   const {ownedNfts} = await alchemy.nft.getNftsForOwner(address, {
-    contractAddresses: [contractAddresses],
+    contractAddresses,
     pageSize: 1
   });
+  console.log({ownedNfts})
   return ownedNfts;
 }

@@ -2,6 +2,7 @@
   "name": "tokengate-app-stratch",
   "version": "1.0.0",
   "main": "web/index.js",
+  "type": "module",
   "license": "UNLICENSED",
   "scripts": {
     "shopify": "shopify",

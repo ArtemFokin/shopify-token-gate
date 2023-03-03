@@ -63,7 +63,7 @@ app.post("/api/gates", async (req, res) => {
       segment,
       productGids,
     });
-    console.log("CREATE gate for: ", response)
+    console.log("CREATE gate for: ", JSON.stringify(response))
     res.status(200).send({ success: true });
   } catch (e) {
     console.error("Failed to process gates/create:", e.message);

@@ -2,6 +2,7 @@ import { useMemo, useState, useCallback } from "react";
 import {
   getGateContextClient,
 } from "@shopify/gate-context-client";
+import { HOST } from "../config";
 
 const gateContextClient =
   getGateContextClient({
@@ -26,14 +27,14 @@ const gateContextClient =
     },
   });
 
-export const host = "https://65ca-109-75-34-216.eu.ngrok.io";
+
 export const useEvaluateGate = () => {
   const gate = getGate();
   const [gateEvaluation, setGateEvaluation] = useState();
   const productId = getProductId();
   const evaluateGate = useCallback(
     async ({ address, message, signature, networkId }) => {
-      const response = await fetch(`${host}/public/gateEvaluation`, {
+      const response = await fetch(`${HOST}/public/gateEvaluation`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

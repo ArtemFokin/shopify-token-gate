@@ -6,12 +6,12 @@
 </div>
 
 <script>
-  {% comment %} window.myAppGates = [{%- for gate in product.gates -%}{%- if gate.configuration.app_id == 'tokengate-app-stratch' -%}{%- assign configuration = gate.configuration -%}{
+  window.myAppGatesAccess = [{%- for gate in product.gates -%}{%- if gate.configuration.app_id == 'tokengate-app-stratch' -%}{%- assign configuration = gate.configuration -%}{
           id: "{{ configuration.id }}",
           name: "{{ configuration.name | escape }}",
           requirements: {{ gate.configuration.metafields.tokengating-example-app.requirements }},
           reaction: {{ gate.configuration.metafields.tokengating-example-app.reaction }}
-        },{%- endif -%}{%- endfor -%}]; {% endcomment %}
+        },{%- endif -%}{%- endfor -%}];
 
   window.myAppGates = [{
       id: "gid://shopify/GateConfiguration/164078",

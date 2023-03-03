@@ -19,21 +19,23 @@ const _App = () => {
         address: wallet.address, 
         message: wallet.message, 
         signature: wallet.signature, 
-        networkId: 137
+        networkId: 80001
       });
     },
   });
   const { requirements, reaction } = getGate();
   return (
-    <Tokengate
-      isConnected={Boolean(wallet)}
-      connectButton={<ConnectButton />}
-      isLoading={false}
-      requirements={requirements}
-      reaction={reaction}
-      isLocked={isLocked}
-      unlockingTokens={unlockingTokens}
-    />
+    <div style={{maxWidth: '600px', margin:"0 auto"}}>
+      <Tokengate
+        isConnected={Boolean(wallet)}
+        connectButton={<ConnectButton />}
+        isLoading={false}
+        requirements={requirements}
+        reaction={reaction}
+        isLocked={isLocked}
+        unlockingTokens={unlockingTokens}
+      />
+    </div>
   );
 };
 
@@ -42,7 +44,6 @@ export const App = () => {
     <WagmiConfig client={client}>
       <ConnectWalletProvider chains={chains} wallet={undefined}>
         <_App />
-        version 4
       </ConnectWalletProvider>
     </WagmiConfig>
   );
