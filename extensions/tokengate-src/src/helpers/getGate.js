@@ -1,0 +1,1 @@
+export const getGate = () => window.myAppGates?.[0] || {}

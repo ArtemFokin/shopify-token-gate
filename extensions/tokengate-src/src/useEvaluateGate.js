@@ -3,6 +3,7 @@ import {
   getGateContextClient,
 } from "@shopify/gate-context-client";
 import { HOST } from "../config";
+import { getGate } from "./helpers/getGate";
 
 const gateContextClient =
   getGateContextClient({
@@ -47,7 +48,7 @@ export const useEvaluateGate = () => {
           address,
           message,
           signature,
-          networkId: gate.requirements.conditions[0]?.networkId || 80001
+          networkId: gate.requirements?.conditions[0]?.networkId || 80001
         }),
       });
       const json = await response.json();
@@ -76,8 +77,7 @@ export const useEvaluateGate = () => {
   };
 };
 
-// This function also present in App.jsx
-const getGate = () => window.myAppGates?.[0] || {}
+
 function getShopDomain() {
   return window.Shopify.shop;
 }

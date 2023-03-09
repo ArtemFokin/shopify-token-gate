@@ -10,6 +10,7 @@ import { configureChains, createClient, WagmiConfig } from "wagmi";
 import { polygon, mainnet, polygonMumbai, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { useEvaluateGate } from './useEvaluateGate';
+import { getGate } from "./helpers/getGate";
 
 const _App = () => {
   const { isLocked, unlockingTokens, evaluateGate, gateEvaluation } = useEvaluateGate();
@@ -23,6 +24,7 @@ const _App = () => {
     },
   });
   const { requirements, reaction } = getGate();
+  if(!requirements || !reaction) return null;
   return (
     <div style={{maxWidth: '600px', margin:"0 auto"}}>
       <Tokengate
@@ -47,8 +49,6 @@ export const App = () => {
     </WagmiConfig>
   );
 };
-
-const getGate = () => window.myAppGates?.[0] || {};
 
 const { chains, provider, webSocketProvider } = configureChains(
   [polygon, mainnet, polygonMumbai, goerli],

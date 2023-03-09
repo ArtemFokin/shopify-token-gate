@@ -11,7 +11,7 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
-    minify: false,
+    minify: true,
     emptyOutDir: true,
     rollupOptions: {
       input: './src/index.jsx',
