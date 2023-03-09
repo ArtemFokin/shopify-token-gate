@@ -1,7 +1,6 @@
-import { myAppMetafieldNamespace } from "./constants.js";
+import { FUNCTION_ID, myAppMetafieldNamespace } from "./constants.js";
 
-const YOUR_FUNCTION_ID = "YOUR_FUNCTION_ID";
-console.log(`Loaded function id ${YOUR_FUNCTION_ID}`);
+console.log(`Loaded function id ${FUNCTION_ID}`);
 
 const DISCOUNT_FUNCTION_QUERY = `
   query discountFunctionQuery {
@@ -41,32 +40,33 @@ const CREATE_AUTOMATIC_DISCOUNT_MUTATION = `
 
 export const createAutomaticDiscount = async (client, gateConfiguration) => {
   const shouldCreateDiscount = await noMatchingFunction(client, gateConfiguration);
-  if (shouldCreateDiscount) {
-    const response = await client.query({
-      data: {
-        query: CREATE_AUTOMATIC_DISCOUNT_MUTATION,
-        variables: {
-          discount: {
-            title: gateConfiguration.name,
-            functionId: YOUR_FUNCTION_ID,
-            combinesWith: {
-              productDiscounts: true,
-              shippingDiscounts: true,
-            },
-            startsAt: new Date(),
-            metafields: [
-              {
-                key: "gate_configuration_id",
-                namespace: myAppMetafieldNamespace,
-                type: "single_line_text_field",
-                value: gateConfiguration.id
-              }
-            ]
+  if(!shouldCreateDiscount) return;
+  
+  await client.query({
+    data: {
+      query: CREATE_AUTOMATIC_DISCOUNT_MUTATION,
+      variables: {
+        discount: {
+          title: gateConfiguration.name,
+          functionId: FUNCTION_ID,
+          combinesWith: {
+            productDiscounts: true,
+            shippingDiscounts: true,
           },
+          startsAt: new Date(),
+          metafields: [
+            {
+              key: "gate_configuration_id",
+              namespace: myAppMetafieldNamespace,
+              type: "single_line_text_field",
+              value: gateConfiguration.id
+            }
+          ]
         },
       },
-    });
-  }
+    },
+  });
+  
 };
 
 const noMatchingFunction = async (client, gateConfiguration) => {

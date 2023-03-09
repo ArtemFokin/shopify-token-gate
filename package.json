@@ -16,6 +16,7 @@
     "@shopify/app": "3.44.1",
     "@shopify/cli": "3.44.1",
     "alchemy-sdk": "^2.4.3",
+    "dotenv": "^16.0.3",
     "web3": "^1.8.2"
   },
   "author": "artemfokin"

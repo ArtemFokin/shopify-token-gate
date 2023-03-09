@@ -5,7 +5,7 @@ import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 export function TokengatesList() {
   const fetch = useAuthenticatedFetch();
 
-  const { data: gatesData, refetch: refetchGates } = useAppQuery({
+  const { data: gatesData, refetch: refetchGates, isLoading } = useAppQuery({
     url: "/api/gates",
     reactQueryOptions: {
       onSuccess: () => {},
@@ -93,6 +93,7 @@ export function TokengatesList() {
           plural: "Tokengates",
         }}
         selectable={false}
+        loading={isLoading}
       >
         {indexTableRow()}
       </IndexTable>

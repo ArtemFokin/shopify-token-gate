@@ -2,7 +2,7 @@
   id="tokengating-example-app"
   data-product_id="{{ product.id }}"
   data-product_gated="{{ product.gated? }}">
-  Tokengating example app block placeholder
+  ...
 </div>
 <script>
   window.myAppGates = [{%- for gate in product.gates -%}{%- if gate.configuration.app_id == 'tokengate-app-stratch' -%}{%- assign configuration = gate.configuration -%}{
@@ -12,6 +12,7 @@
           reaction: {{ gate.configuration.metafields.tokengate-app-stratch.reaction }}
         },{%- endif -%}{%- endfor -%}];
 </script>
+
 
 <script
   async
