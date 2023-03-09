@@ -52,7 +52,7 @@ app.get("/api/gates", async (_req, res) => {
 });
 
 app.post("/api/gates", async (req, res) => {
-  const { name, discountType, discount, segment, productGids } = req.body;
+  const { name, discountType, discount, segment, productGids, networkId } = req.body;
 
   try {
     const response = await createGate({
@@ -62,6 +62,7 @@ app.post("/api/gates", async (req, res) => {
       discount,
       segment,
       productGids,
+      networkId,
     });
     console.log("CREATE gate for: ", JSON.stringify(response))
     res.status(200).send({ success: true });

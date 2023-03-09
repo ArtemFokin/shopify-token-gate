@@ -33,7 +33,7 @@ export const useEvaluateGate = () => {
   const [gateEvaluation, setGateEvaluation] = useState();
   const productId = getProductId();
   const evaluateGate = useCallback(
-    async ({ address, message, signature, networkId }) => {
+    async ({ address, message, signature }) => {
       const response = await fetch(`${HOST}/public/gateEvaluation`, {
         method: "POST",
         headers: {
@@ -47,7 +47,7 @@ export const useEvaluateGate = () => {
           address,
           message,
           signature,
-          networkId,
+          networkId: gate.requirements.conditions[0]?.networkId || 80001
         }),
       });
       const json = await response.json();

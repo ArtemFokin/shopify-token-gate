@@ -37,6 +37,7 @@ export function TokengatesList() {
     { title: "Gate" },
     { title: "Perk" },
     { title: "Segment" },
+    { title: "NetworkId" },
     { title: "Products" },
     { title: "" },
   ];
@@ -49,19 +50,23 @@ export function TokengatesList() {
 
       if (!requirements?.value || !reaction?.value) return;
 
-      const segment = (JSON.parse(requirements.value)?.conditions || [])
-        .map((condition) => condition.contractAddress)
-        .join(", ");
+      const conditions =  JSON.parse(requirements.value)?.conditions || [];
+
+      const segment = conditions.map(cond=>cond.contractAddress).join(', ')
+
+      const networkId = conditions[0]?.networkId;
 
       const perkType = JSON.parse(reaction.value)?.type ?? "—";
 
       const numProducts = subjectBindings?.nodes?.length ?? "—";
+
 
       return (
         <IndexTable.Row id={id} key={id} position={index}>
           <IndexTable.Cell>{name}</IndexTable.Cell>
           <IndexTable.Cell>{perkTypeName[`${perkType}`]}</IndexTable.Cell>
           <IndexTable.Cell>{segment}</IndexTable.Cell>
+          <IndexTable.Cell>{networkId}</IndexTable.Cell>
           <IndexTable.Cell>{numProducts}</IndexTable.Cell>
           <IndexTable.Cell>
             <Button onClick={() => deleteGate(id)}>Delete</Button>

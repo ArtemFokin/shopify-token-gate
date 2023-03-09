@@ -9,6 +9,7 @@ import {
   Layout,
   Page,
   PageActions,
+  Select,
   Stack,
   TextContainer,
   TextField,
@@ -37,13 +38,17 @@ export default function CreateTokengate() {
       value: undefined,
       validates: (segment) => !segment && "Segment cannot be empty",
     }),
+    networkId: useField({
+      value: undefined,
+      validates: networkId=> !networkId && "NetworkId cannot be empty"
+    }),
     products: useField([]),
   };
 
   const { fields, submit, submitting, dirty, reset, makeClean } = useForm({
     fields: fieldsDefinition,
     onSubmit: async (formData) => {
-      const { discountType, discount, name, products, segment } = formData;
+      const { discountType, discount, name, products, segment, networkId } = formData;
 
       const productGids = products.map((product) => product.id);
 
@@ -58,6 +63,7 @@ export default function CreateTokengate() {
           name,
           productGids,
           segment: segment.split(","),
+          networkId: parseInt(networkId),
         }),
       });
 
@@ -171,6 +177,18 @@ export default function CreateTokengate() {
                       placeholder="0x123, 0x456, 0x789"
                       {...fields.segment}
                       autoComplete="off"
+                    />
+                  </Card.Section>
+                  <Card.Section title="NETWORK ID">
+                    <Select
+                      label="NetworkId"
+                      options={[
+                        {label: "Ethereum", value: "1"},
+                        {label: "Ethereum testnet", value: "5"},
+                        {label: "Polygon", value: "137"},
+                        {label: "Polygon testnet", value: "80001"},
+                      ]}
+                      {...fields.networkId}
                     />
                   </Card.Section>
                 </Card>

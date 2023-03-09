@@ -68,6 +68,13 @@ function getHmac(payload) {
   };
 }
 
+const NETWORK_ID_TO_ALCHEMY = {
+  1: Network.ETH_MAINNET,
+  137: Network.MATIC_MAINNET,
+  5: Network.ETH_GOERLI,
+  80001: Network.MATIC_MUMBAI,
+}
+
 async function getUserTokenForContract({
   address,
   contractAddresses,
@@ -75,9 +82,11 @@ async function getUserTokenForContract({
 }) {
   // this could be some lookup against some node or a 3rd party service like Alchemy
 
+  if(!NETWORK_ID_TO_ALCHEMY[networkId]) return [];
+
   const config = {
     apiKey: ALCHEMY_API_KEY,
-    network: Network.MATIC_MAINNET,
+    network: NETWORK_ID_TO_ALCHEMY[networkId],
   };
   const alchemy = new Alchemy(config);
 

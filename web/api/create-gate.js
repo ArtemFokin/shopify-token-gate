@@ -137,6 +137,7 @@ export default async function createGate({
   discount,
   segment,
   productGids,
+  networkId
 }) {
   const client = new shopify.api.clients.Graphql({ session });
 
@@ -145,6 +146,7 @@ export default async function createGate({
       name: `Gate for ${address.slice(0, 5)}`, // Replace with your gate name
       conditionsDescription: "Any token", // Replace with your condition description
       contractAddress: address,
+      networkId,
       imageUrl: "https://placekitten.com/g/200/200", // Replace with NFT collection image URL
     };
   });

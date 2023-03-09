@@ -7,7 +7,7 @@ import {
 } from "@shopify/connect-wallet";
 import { getDefaultConnectors } from "@shopify/connect-wallet";
 import { configureChains, createClient, WagmiConfig } from "wagmi";
-import { polygon } from "wagmi/chains";
+import { polygon, mainnet, polygonMumbai, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { useEvaluateGate } from './useEvaluateGate';
 
@@ -19,7 +19,6 @@ const _App = () => {
         address: wallet.address, 
         message: wallet.message, 
         signature: wallet.signature, 
-        networkId: 80001
       });
     },
   });
@@ -52,7 +51,7 @@ export const App = () => {
 const getGate = () => window.myAppGates?.[0] || {};
 
 const { chains, provider, webSocketProvider } = configureChains(
-  [polygon],
+  [polygon, mainnet, polygonMumbai, goerli],
   [publicProvider()]
 );
 
