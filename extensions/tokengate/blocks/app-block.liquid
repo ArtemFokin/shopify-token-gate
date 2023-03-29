@@ -2,7 +2,7 @@
   id="tokengating-example-app"
   data-product_id="{{ product.id }}"
   data-product_gated="{{ product.gated? }}">
-  ...
+  &nbsp;
 </div>
 <script>
   window.myAppGates = [{%- for gate in product.gates -%}{%- if gate.configuration.app_id == 'tokengate-app-stratch' -%}{%- assign configuration = gate.configuration -%}{
@@ -11,16 +11,13 @@
           requirements: {{ gate.configuration.metafields.tokengate-app-stratch.requirements }},
           reaction: {{ gate.configuration.metafields.tokengate-app-stratch.reaction }}
         },{%- endif -%}{%- endfor -%}];
-  window.myAppGatedBlocks = "{{ block.settings.gated_blocks_classes }}".split(',').map(
-    v => v
-      ? `.${
-      v.trim()
-    }` : undefined
-  ).filter(v => !!v);
+  window.myAppGatedBlocks = "{{ block.settings.gated_blocks_classes }}".split(',').map(v => v.trim()).filter(v => !!v);
   if (window.myAppGates.length) {
-    window.myAppGatedBlocks.forEach(className => {
-      const el = document.querySelector(className);
-      el.style.display = 'none'
+    window.myAppGatedBlocks.forEach(selector => {
+      const el = document.querySelector(selector);
+      if (el) {
+        el.style.display = 'none'
+      }
     })
   }
 </script>
@@ -39,10 +36,10 @@
     "templates": ["product"],
     "settings": [
       {
-        "label": "Gated blocks classes(buy button, etc.)",
+        "label": "Gated blocks css selectors(buy buttons/variants/quantity blocks, etc.)",
         "id": "gated_blocks_classes",
         "type": "text",
-        "default": "product-form, product-form__quantity"
+        "default": ".product-form, .product-form__quantity"
       }
     ]
   }

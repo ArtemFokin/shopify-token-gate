@@ -11,19 +11,9 @@ import { polygon, mainnet, polygonMumbai, goerli } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { useEvaluateGate } from './useEvaluateGate';
 import { getGate } from "./helpers/getGate";
+import { displayGatedBlocks, hideGatedBlocks } from "./helpers/toggleGatedBlocks";
 
-const displayGatedBlocks = ()=>{
-  window.myAppGatedBlocks?.forEach(className => {
-    const el = document.querySelector(className);
-    el.style.display = ''
-  })
-}
-const hideGatedBlocks = ()=>{
-  window.myAppGatedBlocks?.forEach(className => {
-    const el = document.querySelector(className);
-    el.style.display = 'none'
-  })
-}
+
 
 const _App = () => {
   const { isLocked, unlockingTokens, evaluateGate } = useEvaluateGate();
