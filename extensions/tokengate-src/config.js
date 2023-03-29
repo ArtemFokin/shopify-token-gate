@@ -1,1 +1,1 @@
-export const API_HOST = "https://3c4e-91-72-52-210.eu.ngrok.io";
+export const API_HOST = "https://shopify-token-gate-production.up.railway.app";
