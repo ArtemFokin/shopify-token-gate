@@ -1,0 +1,44 @@
+query Input {
+  cart {
+    attribute(key: "_shopify_gate_context") {
+      value
+    }
+    lines {
+      quantity
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            id
+            handle
+            gates {
+              id
+              configuration(appId: "tokengate-app-stratch") {
+                id
+                metafield(namespace: "tokengate-app-stratch", key: "reaction") {
+                  value
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    buyerIdentity {
+      customer {
+        numberOfOrders
+      }
+    }
+    cost {
+      subtotalAmount {
+        amount
+      }
+    }
+  }
+  # discountNode {
+  #   metafield(namespace: "tokengate-app-stratch", key: "gate_configuration_id") {
+  #     value
+  #   }
+  # }
+}

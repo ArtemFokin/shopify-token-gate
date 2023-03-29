@@ -15,7 +15,7 @@ export const gateEvaluation = async (req, res) => {
   // verify signature
   const recoveredAddress = web3.eth.accounts.recover(message, signature);
   if (recoveredAddress !== address) {
-    res.status(403).send("Invalid signature");
+    res.status(403).send({msg:"Invalid signature"});
     return;
   }
   
@@ -29,14 +29,15 @@ export const gateEvaluation = async (req, res) => {
     networkId
   });
   if (unlockingTokens.length === 0) {
-    res.status(403).send("No unlocking tokens");
+    res.status(403).send({msg:"No unlocking tokens"});
     return;
   }
 
-  const payload = {
-    id: gateConfigurationGid
-  };
-
-  const response = {gateContext: [getHmac(payload)], unlockingTokens};
+  const response = {gateContext: [
+    {
+      id: gateConfigurationGid, 
+      hmac: getHmac(gateConfigurationGid)
+    }
+  ], unlockingTokens};
   res.status(200).send(response);
 }

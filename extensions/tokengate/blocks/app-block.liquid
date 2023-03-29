@@ -11,6 +11,18 @@
           requirements: {{ gate.configuration.metafields.tokengate-app-stratch.requirements }},
           reaction: {{ gate.configuration.metafields.tokengate-app-stratch.reaction }}
         },{%- endif -%}{%- endfor -%}];
+  window.myAppGatedBlocks = "{{ block.settings.gated_blocks_classes }}".split(',').map(
+    v => v
+      ? `.${
+      v.trim()
+    }` : undefined
+  ).filter(v => !!v);
+  if (window.myAppGates.length) {
+    window.myAppGatedBlocks.forEach(className => {
+      const el = document.querySelector(className);
+      el.style.display = 'none'
+    })
+  }
 </script>
 
 
@@ -25,6 +37,13 @@
     "name": "Tokengate",
     "target": "section",
     "templates": ["product"],
-    "settings": []
+    "settings": [
+      {
+        "label": "Gated blocks classes(buy button, etc.)",
+        "id": "gated_blocks_classes",
+        "type": "text",
+        "default": "product-form, product-form__quantity"
+      }
+    ]
   }
 {% endschema %}

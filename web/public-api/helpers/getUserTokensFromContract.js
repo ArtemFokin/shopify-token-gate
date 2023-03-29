@@ -24,7 +24,6 @@ export async function getUserTokenForContract({
   const alchemy = new Alchemy(config);
 
   // Get owner of NFT
-  console.log(config, address, contractAddresses)
   const {ownedNfts} = await alchemy.nft.getNftsForOwner(address, {
     contractAddresses,
     pageSize: 1

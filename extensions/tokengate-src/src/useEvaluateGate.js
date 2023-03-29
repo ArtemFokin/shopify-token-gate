@@ -2,7 +2,7 @@ import { useMemo, useState, useCallback } from "react";
 import {
   getGateContextClient,
 } from "@shopify/gate-context-client";
-import { HOST } from "../config";
+import { API_HOST } from "../config";
 import { getGate } from "./helpers/getGate";
 
 const gateContextClient =
@@ -35,26 +35,36 @@ export const useEvaluateGate = () => {
   const productId = getProductId();
   const evaluateGate = useCallback(
     async ({ address, message, signature }) => {
-      const response = await fetch(`${HOST}/public/gateEvaluation`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId,
-          productGid: `gid://shopify/Product/${productId}`,
-          gateConfigurationGid: `gid://shopify/GateConfiguration/${gate.id}`,
-          shopDomain: getShopDomain(),
-          address,
-          message,
-          signature,
-          networkId: gate.requirements?.conditions[0]?.networkId || 80001
-        }),
-      });
-      const json = await response.json();
-      setGateEvaluation(json);
-      gateContextClient.write(json.gateContext)
-        .catch(e => console.error('failed to write to gate context'));
+      try{
+        const response = await fetch(`${API_HOST}/public/gateEvaluation`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            productId,
+            productGid: `gid://shopify/Product/${productId}`,
+            gateConfigurationGid: `gid://shopify/GateConfiguration/${gate.id}`,
+            shopDomain: getShopDomain(),
+            address,
+            message,
+            signature,
+            networkId: gate.requirements?.conditions[0]?.networkId || 80001
+          }),
+        });
+        const json = await response.json();   //{gateContext: [getHmac({id: gateConfigurationGid})], unlockingTokens};
+        if (!response?.ok) {
+          throw new Error(JSON.stringify(json));
+        }
+        setGateEvaluation(json);
+        await gateContextClient.write(json.gateContext)
+        .catch(e => {
+          console.log(e);
+          throw new Error('Failed to write to gate context')
+        });
+      } catch(err){
+        console.log(err);
+      }
     },
     [setGateEvaluation, gate]
   );

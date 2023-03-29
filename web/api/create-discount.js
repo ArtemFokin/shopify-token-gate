@@ -78,9 +78,9 @@ const noMatchingFunction = async (client, gateConfiguration) => {
 
   if (!Boolean(response?.body?.data?.automaticDiscountNodes?.nodes)) return true;
   for (const node of response.body.data.automaticDiscountNodes.nodes) {
-    const functionId = node.discount.automaticDiscount.functionId;
-    const gateConfigurationId = node.metafield.value;
-    if (YOUR_FUNCTION_ID == functionId &&
+    const functionId = node?.automaticDiscount.functionId;
+    const gateConfigurationId = node.metafield?.value;
+    if (FUNCTION_ID == functionId &&
         gateConfiguration.id == gateConfigurationId) return false;
   }
 

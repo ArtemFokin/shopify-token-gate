@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { Button, Card, IndexTable, Stack } from "@shopify/polaris";
 import { useAppQuery, useAuthenticatedFetch } from "../hooks";
 

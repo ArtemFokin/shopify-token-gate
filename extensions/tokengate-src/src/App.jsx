@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Tokengate } from "@shopify/tokengate";
 import {
   ConnectButton,
@@ -12,8 +12,23 @@ import { publicProvider } from "wagmi/providers/public";
 import { useEvaluateGate } from './useEvaluateGate';
 import { getGate } from "./helpers/getGate";
 
+const displayGatedBlocks = ()=>{
+  window.myAppGatedBlocks?.forEach(className => {
+    const el = document.querySelector(className);
+    el.style.display = ''
+  })
+}
+const hideGatedBlocks = ()=>{
+  window.myAppGatedBlocks?.forEach(className => {
+    const el = document.querySelector(className);
+    el.style.display = 'none'
+  })
+}
+
 const _App = () => {
-  const { isLocked, unlockingTokens, evaluateGate, gateEvaluation } = useEvaluateGate();
+  const { isLocked, unlockingTokens, evaluateGate } = useEvaluateGate();
+  const { requirements, reaction } = getGate();
+  const gateRequired = requirements && reaction;
   const { wallet } = useConnectWallet({
     onConnect: (wallet) => {
       evaluateGate({
@@ -23,8 +38,15 @@ const _App = () => {
       });
     },
   });
-  const { requirements, reaction } = getGate();
-  if(!requirements || !reaction) return null;
+  useEffect(()=>{
+    if(isLocked && gateRequired){
+      hideGatedBlocks();
+    } else {
+      displayGatedBlocks();
+    }
+  }, [isLocked, gateRequired])
+  
+  if(!gateRequired) return null;
   return (
     <div style={{maxWidth: '600px', margin:"0 auto"}}>
       <Tokengate
@@ -32,7 +54,10 @@ const _App = () => {
         connectButton={<ConnectButton />}
         isLoading={false}
         requirements={requirements}
-        reaction={reaction}
+        // reaction={reaction}
+        reaction={{
+          type:"exclusive_access",
+        }}
         isLocked={isLocked}
         unlockingTokens={unlockingTokens}
       />
@@ -43,7 +68,7 @@ const _App = () => {
 export const App = () => {
   return (
     <WagmiConfig client={client}>
-      <ConnectWalletProvider chains={chains} wallet={undefined}>
+      <ConnectWalletProvider chains={chains}>
         <_App />
       </ConnectWalletProvider>
     </WagmiConfig>
